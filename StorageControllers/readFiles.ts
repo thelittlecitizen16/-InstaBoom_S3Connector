@@ -1,5 +1,4 @@
 import { BlobServiceClient, StorageSharedKeyCredential } from "@azure/storage-blob";
-import fs from "fs";
 import config from '../configuration.json'
 
 // Azure storage credentials
@@ -17,21 +16,17 @@ const containerClient = blobServiceClient.getContainerClient(config.imagesContai
 
 async function getImageById(id : string) : Promise<string>{
 
-    let j = 1;
-    var blockBlobClient = containerClient.getBlockBlobClient(id);
-    var downloadBlockBlobResponse = await blockBlobClient.downloadToBuffer();
+    let blockBlobClient = containerClient.getBlockBlobClient(id);
+    let downloadBlockBlobResponse = await blockBlobClient.downloadToBuffer();
     return downloadBlockBlobResponse.toString('base64');
 }
 
-async function streamToBuffer(readableStream) {
-    return new Promise((resolve, reject) => {
-      const chunks = [];
-      readableStream.on("data", (data) => {
-        chunks.push(data instanceof Buffer ? data : Buffer.from(data));
-      });
-      readableStream.on("end", () => {
-        resolve(Buffer.concat(chunks));
-      });
-      readableStream.on("error", reject);
-    });
-  }
+async function getMultipleImages(imagesIDs:string[]) : Promise<string[]> {
+    let base64Files = [];
+    for (let id of imagesIDs) {
+        let base64file = await getImageById(id);
+        base64Files.push(base64Files);
+    }
+    return base64Files;
+}
+

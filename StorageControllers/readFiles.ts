@@ -30,3 +30,5 @@ async function getMultipleImages(imagesIDs:string[]) : Promise<string[]> {
     return base64Files;
 }
 
+module.exports.getImageById = getImageById;
+module.exports.getMultipleImages = getMultipleImages;

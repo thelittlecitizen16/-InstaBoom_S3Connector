@@ -1,6 +1,10 @@
 import { BlobServiceClient, StorageSharedKeyCredential } from "@azure/storage-blob";
 import config from '../configuration.json'
 
+interface FilesAsBase64{
+    
+}
+
 // Azure storage credentials
 const account = config.azureCredentials.account;
 const accountKey = config.azureCredentials.accountkey;
@@ -22,10 +26,10 @@ async function getImageById(id : string) : Promise<string>{
 }
 
 async function getMultipleImages(imagesIDs:string[]) : Promise<string[]> {
-    let base64Files = [];
+    let base64Files : any = {};
     for (let id of imagesIDs) {
-        let base64file = await getImageById(id);
-        base64Files.push(base64Files);
+        let base64string = await getImageById(id);
+        base64Files[id] = base64string;
     }
     return base64Files;
 }

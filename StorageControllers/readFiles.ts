@@ -12,3 +12,5 @@ const blobServiceClient = new BlobServiceClient(
   `https://${account}.blob.core.windows.net`,
   sharedKeyCredential
 );
+
+const containerClient = blobServiceClient.getContainerClient(config.imagesContainerName);

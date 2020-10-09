@@ -25,10 +25,10 @@ async function getImageById(id : string) : Promise<string>{
     return downloadBlockBlobResponse.toString('base64');
 }
 
-function getMultipleImages(imagesIDs:string[]) : Object {
+async function getMultipleImages(imagesIDs:string[]) : Promise<Object> {
     let base64Files : any = {};
     for (let id of imagesIDs) {
-        base64Files[id] = getImageById(id)
+        base64Files[id] = await getImageById(id)
     }
     return base64Files;
 }

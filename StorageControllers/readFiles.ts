@@ -1,10 +1,6 @@
 import { BlobServiceClient, StorageSharedKeyCredential } from "@azure/storage-blob";
 import config from '../configuration.json'
 
-interface FilesAsBase64{
-    
-}
-
 // Azure storage credentials
 const account = config.azureCredentials.account;
 const accountKey = config.azureCredentials.accountkey;
@@ -20,16 +16,19 @@ const containerClient = blobServiceClient.getContainerClient(config.imagesContai
 
 async function getImageById(id : string) : Promise<string>{
 
+    let downloadBlockBlobResponse = Buffer.alloc(0);
     let blockBlobClient = containerClient.getBlockBlobClient(id);
-    let downloadBlockBlobResponse = await blockBlobClient.downloadToBuffer();
+    try{ 
+        downloadBlockBlobResponse = await blockBlobClient.downloadToBuffer();
+    }
+    catch{ }
     return downloadBlockBlobResponse.toString('base64');
 }
 
-async function getMultipleImages(imagesIDs:string[]) : Promise<string[]> {
+function getMultipleImages(imagesIDs:string[]) : Object {
     let base64Files : any = {};
     for (let id of imagesIDs) {
-        let base64string = await getImageById(id);
-        base64Files[id] = base64string;
+        base64Files[id] = getImageById(id)
     }
     return base64Files;
 }

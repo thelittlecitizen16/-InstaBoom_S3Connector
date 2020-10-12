@@ -24,6 +24,7 @@ async function getImageById(id : string) : Promise<any>{
     let result = blockBlobClient.downloadToBuffer()
     .then((res : Buffer) => {
        var data : Promise<string> = sharp(res)
+       .toFormat('webp')
         .resize(420,300)
         .toBuffer()
         return data;
@@ -37,10 +38,10 @@ async function getImageById(id : string) : Promise<any>{
 
 async function getMultipleImages(imagesIDs:string[]) : Promise<Object> {
     let base64Files : any = {};
-    for (let id of imagesIDs) {
+    await Promise.all(imagesIDs.map(async (id)=>{
         let data = await getImageById(id)
         base64Files[id] = data.toString('base64')
-    }
+    }))
     return base64Files;
 }
 

@@ -21,8 +21,10 @@
   "homepage": "https://github.com/thelittlecitizen16/-InstaBoom_S3Connector#readme",
   "dependencies": {
     "@azure/storage-blob": "^12.2.1",
+    "@types/cors": "^2.8.8",
     "@types/joi": "^14.3.4",
     "@types/lodash": "^4.14.161",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "joi": "^17.2.1",
